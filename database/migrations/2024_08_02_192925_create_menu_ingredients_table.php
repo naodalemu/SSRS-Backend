@@ -15,11 +15,19 @@ class CreateMenuIngredientsTable extends Migration
     {
         Schema::create('menu_ingredients', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('menu_item_id')->constrained('menu_items')->onDelete('cascade');
-            $table->foreignId('ingredient_id')->constrained('ingredients')->onDelete('cascade');
+            $table->unsignedBigInteger('menu_item_id');
+            $table->unsignedBigInteger('ingredient_id');
             $table->timestamps();
-
-
+        
+            $table->foreign('menu_item_id')
+                ->references('id')
+                ->on('menu_items')
+                ->onDelete('cascade');
+            
+            $table->foreign('ingredient_id')
+                ->references('id')
+                ->on('ingredients')
+                ->onDelete('cascade');
         });
     }
 
