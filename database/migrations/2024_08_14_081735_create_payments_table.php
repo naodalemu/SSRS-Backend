@@ -14,13 +14,16 @@ class CreatePaymentsTable extends Migration
             $table->decimal('amount', 10, 2);
             $table->string('payment_method');
             $table->string('payment_status');
+            $table->timestamps();
+
 
             $table->foreign('order_id')
-            ->references('id')
-            ->on('orders')
-            ->onDelete('cascade');
-            $table->timestamps();
+                ->references('id')
+                ->on('orders')
+                ->onDelete('cascade');
+            
         });
+
     }
 
     public function down()

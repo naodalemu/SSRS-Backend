@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTablesTable extends Migration
+class CreateShiftsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,13 @@ class CreateTablesTable extends Migration
      */
     public function up()
     {
-        Schema::create('tables', function (Blueprint $table) {
+        Schema::create('shifts', function (Blueprint $table) {
             $table->id();
-            $table->integer('table_number')->unique();
-            $table->string('qr_code')->unique();
-            $table->enum('status', ['free', 'occupied'])->default('free');
+            $table->string('name');
+            $table->time('start_time');
+            $table->time('end_time');
+            $table->date('shift_date');
+            $table->string('shift_day');
             $table->timestamps();
         });
     }
@@ -29,6 +31,6 @@ class CreateTablesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tables');
+        Schema::dropIfExists('shifts');
     }
 }

@@ -15,20 +15,30 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('table_id');
-            $table->date('order_date');
-            $table->decimal('total_amount', 10, 2);
-            $table->string('order_status');
-            $table->string('customer_ip')->default("0.0.0.0"); // Default value for IP
-            $table->string('customer_generated_id')->default("adminOrder"); // Default value for generated ID
+            $table->unsignedBigInteger('customer_id')->nullable();
+            $table->unsignedBigInteger('table_id')->nullable();
+            $table->string('customer_ip')->nullable(); // Stores IP address for guests
+            $table->dateTime('order_date_time');
+            $table->enum('order_type', ['dine-in', 'remote'])->default('dine-in'); 
+            $table->decimal('total_price', 10, 2);
+            $table->enum('order_status', ['pending', 'processing','ready', 'completed', 'canceled'])->default('pending');
+            $table->boolean('is_paid')->default(false);  
+            $table->boolean('arrived')->default(false);
+            $table->string('customer_temp_id')->nullable();
+            $table->boolean('is_remote')->default(false); 
             $table->timestamps();
 
-            // Foreign key constraint on table_id
+            $table->foreign('customer_id')
+                ->references('id')
+                ->on('customers')
+                ->onDelete('set null');
+            
             $table->foreign('table_id')
-                  ->references('id')
-                  ->on('tables')
-                  ->onDelete('cascade');
+                ->references('id')
+                ->on('tables')
+                ->onDelete('set null');
         });
+        
     }
 
     /**

@@ -16,7 +16,7 @@ class CreateMenuItemsTable extends Migration
         Schema::create('menu_items', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->text('description'); // Changed to 'text' to store longer descriptions
+            $table->text('description')->nullable(); // Changed to 'text' to store longer descriptions
             $table->string('image')->nullable()->default('default_image.jpg');
             $table->string('categories');
             $table->decimal('price', 8, 2);

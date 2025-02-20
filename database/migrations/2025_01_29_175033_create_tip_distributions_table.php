@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMenuTagsTable extends Migration
+class CreateTipDistributionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,20 +13,23 @@ class CreateMenuTagsTable extends Migration
      */
     public function up()
     {
-        Schema::create('menu_tags', function (Blueprint $table) {
+        Schema::create('tip_distributions', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('menu_item_id');
-            $table->unsignedBigInteger('tag_id');
+            $table->unsignedBigInteger('payment_id');
+            $table->unsignedBigInteger('staff_id');
+            $table->dateTime('date');
+            $table->decimal('distributed_amount', 10, 2);
             $table->timestamps();
         
-            $table->foreign('menu_item_id')
-                ->references('id')
-                ->on('menu_items')
-                ->onDelete('cascade');
             
-            $table->foreign('tag_id')
+            $table->foreign('payment_id')
                 ->references('id')
-                ->on('tags')
+                ->on('payments')
+                ->onDelete('cascade');
+        
+            $table->foreign('staff_id')
+                ->references('id')
+                ->on('staff')
                 ->onDelete('cascade');
         });
     }
@@ -38,6 +41,6 @@ class CreateMenuTagsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('menu_tags');
+        Schema::dropIfExists('tip_distributions');
     }
 }
